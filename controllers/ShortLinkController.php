@@ -19,8 +19,9 @@ class ShortLinkController {
         if (Yii::$app->request->isPost) {
             $originalUrl = Yii::$app->request->post('original_url');
 
-            // Генерация токена
-            $token = ShortLink::generateToken();
+            do {
+                $token = ShortLink::generateToken();
+            } while (ShortLink::find()->where(['token' => $token])->exists());
 
             $model->token = $token;
             $model->original_url = $originalUrl;
